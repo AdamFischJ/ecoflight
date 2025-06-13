@@ -28,7 +28,7 @@ def fetch_wind_data(lat, lon):
     data = response.json()
 
     df = pd.DataFrame({
-        "time": data["hourly"]["time"],
+        "timestamp": data["hourly"]["time"],
         "wind_speed_mps": data["hourly"]["wind_speed_10m"],
         "wind_direction_deg": data["hourly"]["wind_direction_10m"],
     })

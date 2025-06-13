@@ -14,7 +14,7 @@
     h1 {
       text-align: center;
     }
-    input {
+    input, select {
       margin: 5px;
       padding: 8px;
     }
@@ -31,9 +31,23 @@
       display: flex;
       justify-content: space-between;
       gap: 20px;
+      margin-top: 20px;
     }
     .graph {
       flex: 1;
+    }
+    #loading {
+      display: none;
+      text-align: center;
+      margin: 20px 0;
+      font-weight: bold;
+    }
+    #stats {
+      display: none;
+      margin-top: 20px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      background-color: #f9f9f9;
     }
   </style>
 </head>
@@ -46,8 +60,19 @@
   <label for="lon">Longitude:</label>
   <input type="number" id="lon" step="any" placeholder="e.g. -77.9447" />
 
+  <label for="material">Material:</label>
+  <select id="material">
+    <option value="smoke">Smoke</option>
+    <option value="pollen">Pollen</option>
+    <option value="plastic">Plastic</option>
+  </select>
+
   <br/>
   <button onclick="runSimulation()">Run Simulation</button>
+
+  <div id="loading">Loading simulation... Please wait.</div>
+
+  <div id="stats"></div>
 
   <div>
     <h3>Simulated Particle Dispersion</h3>
@@ -65,40 +90,6 @@
     </div>
   </div>
 
-  <script>
-    async function runSimulation() {
-      const lat = document.getElementById("lat").value;
-      const lon = document.getElementById("lon").value;
-
-      if (!lat || !lon) {
-        alert("Please enter valid coordinates.");
-        return;
-      }
-
-      try {
-        const res = await fetch("http://127.0.0.1:5000/simulate", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ lat, lon })
-        });
-
-        const data = await res.json();
-
-        if (data.error) {
-          alert("Error: " + data.error);
-          return;
-        }
-
-        const t = `?t=${Date.now()}`;
-        document.getElementById("spreadImg").src = "http://127.0.0.1:5000" + data.spread_plot + t;
-        document.getElementById("windPatternImg").src = "http://127.0.0.1:5000" + data.wind_pattern + t;
-        document.getElementById("windVectorImg").src = "http://127.0.0.1:5000" + data.wind_vector_path + t;
-
-      } catch (err) {
-        alert("Simulation failed.");
-        console.error(err);
-      }
-    }
-  </script>
+  <script src="main.js"></script>
 </body>
 </html>
