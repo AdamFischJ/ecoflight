@@ -1,69 +1,55 @@
 body {
-    margin: 0;
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f4f4;
-    color: #222;
+  font-family: Arial, sans-serif;
+  background: #f4f4f4;
+  color: #222;
+  margin: 0;
+  padding: 0;
 }
 
 .container {
-    max-width: 800px;
-    margin: 50px auto;
-    padding: 20px 30px;
-    background: #fff;
-    border-radius: 6px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  max-width: 700px;
+  margin: 40px auto;
+  background: white;
+  padding: 30px;
+  border-radius: 6px;
+  box-shadow: 0 0 10px rgba(0,0,0,0.1);
 }
 
-h1 {
-    font-size: 36px;
-    text-align: center;
-    margin-bottom: 0;
+h1, h2 {
+  text-align: center;
 }
 
-h2 {
-    font-size: 18px;
-    text-align: center;
-    color: #666;
-    margin-top: 0;
+form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 20px;
 }
 
-.intro {
-    text-align: center;
-    font-size: 16px;
-    margin: 20px 0;
-    line-height: 1.5;
+input, button {
+  padding: 10px;
+  font-size: 16px;
 }
 
-.plot {
-    display: block;
-    margin: 30px auto;
-    max-width: 100%;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+button {
+  background: #0055aa;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
-.buttons {
-    text-align: center;
-    margin-top: 25px;
+button:hover {
+  background: #003f88;
 }
 
-.buttons a {
-    background-color: #0055aa;
-    color: white;
-    text-decoration: none;
-    padding: 10px 20px;
-    font-weight: bold;
-    border-radius: 4px;
-    transition: background-color 0.3s ease;
+#result {
+  margin-top: 30px;
+  text-align: center;
 }
 
-.buttons a:hover {
-    background-color: #003f88;
-}
-
-.footer {
-    text-align: center;
-    font-size: 14px;
-    color: #777;
-    margin-top: 40px;
+#result img {
+  max-width: 100%;
+  border: 1px solid #ccc;
+  border-radius: 4px;
 }

@@ -1,31 +1,104 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>EcoFlight - Wind Dispersion Simulator</title>
-    <link rel="stylesheet" href="style.css" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>EcoFlight Simulation</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      padding: 30px;
+      max-width: 1000px;
+      margin: auto;
+    }
+    h1 {
+      text-align: center;
+    }
+    input {
+      margin: 5px;
+      padding: 8px;
+    }
+    button {
+      padding: 10px 20px;
+      margin-top: 10px;
+    }
+    img {
+      max-width: 100%;
+      border: 1px solid #ccc;
+      display: block;
+    }
+    .side-by-side {
+      display: flex;
+      justify-content: space-between;
+      gap: 20px;
+    }
+    .graph {
+      flex: 1;
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>EcoFlight</h1>
-        <h2>Simulating Wind-Driven Environmental Dispersion</h2>
+  <h1>EcoFlight Wind Simulation</h1>
 
-        <p class="intro">
-            EcoFlight is a Python-based simulation that models the spread of airborne materials like pollen, smoke, and microplastics using wind vector data.
-            This visualization is a static example showing how materials may disperse over a 24-hour period from Wilmington, NC.
-        </p>
+  <label for="lat">Latitude:</label>
+  <input type="number" id="lat" step="any" placeholder="e.g. 34.2257" />
 
-        <img src="spread_plot.png" alt="Wind Dispersion Plot" class="plot"/>
+  <label for="lon">Longitude:</label>
+  <input type="number" id="lon" step="any" placeholder="e.g. -77.9447" />
 
-        <div class="buttons">
-            <a href="https://github.com/AdamFischJ/ecoflight" target="_blank">View Project on GitHub</a>
-        </div>
+  <br/>
+  <button onclick="runSimulation()">Run Simulation</button>
 
-        <p class="footer">
-            Developed by Adam Fischer<br/>
-            Environmental Science + Computer Science
-        </p>
+  <div>
+    <h3>Simulated Particle Dispersion</h3>
+    <img id="spreadImg" src="" alt="Particle dispersion will appear here." />
+  </div>
+
+  <div class="side-by-side">
+    <div class="graph">
+      <h3>Raw Wind Pattern</h3>
+      <img id="windPatternImg" src="" alt="Wind pattern will appear here." />
     </div>
+    <div class="graph">
+      <h3>Wind Vector Path</h3>
+      <img id="windVectorImg" src="" alt="Wind vector path will appear here." />
+    </div>
+  </div>
+
+  <script>
+    async function runSimulation() {
+      const lat = document.getElementById("lat").value;
+      const lon = document.getElementById("lon").value;
+
+      if (!lat || !lon) {
+        alert("Please enter valid coordinates.");
+        return;
+      }
+
+      try {
+        const res = await fetch("http://127.0.0.1:5000/simulate", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ lat, lon })
+        });
+
+        const data = await res.json();
+
+        if (data.error) {
+          alert("Error: " + data.error);
+          return;
+        }
+
+        const t = `?t=${Date.now()}`;
+        document.getElementById("spreadImg").src = "http://127.0.0.1:5000" + data.spread_plot + t;
+        document.getElementById("windPatternImg").src = "http://127.0.0.1:5000" + data.wind_pattern + t;
+        document.getElementById("windVectorImg").src = "http://127.0.0.1:5000" + data.wind_vector_path + t;
+
+      } catch (err) {
+        alert("Simulation failed.");
+        console.error(err);
+      }
+    }
+  </script>
 </body>
 </html>

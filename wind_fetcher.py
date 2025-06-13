@@ -1,24 +1,40 @@
+import requests
 import pandas as pd
-import random
-from datetime import datetime, timedelta
+from datetime import datetime, timedelta, timezone
 
-def generate_mock_wind_data(lat, lon, hours=24):
-    from datetime import datetime, timedelta, UTC
-    base_time = datetime.now(UTC)
-    data = []
+def fetch_wind_data(lat, lon):
+    """
+    Fetches real hourly wind speed and direction data for the past 24 hours
+    from the Open-Meteo API and returns it as a Pandas DataFrame.
+    """
+    end_time = datetime.now(timezone.utc)
+    start_time = end_time - timedelta(hours=24)
 
-    for i in range(hours):
-        timestamp = base_time + timedelta(hours=i)
-        wind_speed = round(random.uniform(1.0, 10.0), 2)
-        wind_dir = round(random.uniform(0, 360), 1)
-        data.append({
-            'timestamp': timestamp.strftime('%Y-%m-%d %H:%M:%S'),
-            'lat': lat,
-            'lon': lon,
-            'wind_speed_mps': wind_speed,
-            'wind_direction_deg': wind_dir,
-        })
+    url = (
+        f"https://api.open-meteo.com/v1/forecast?"
+        f"latitude={lat}&longitude={lon}"
+        f"&hourly=wind_speed_10m,wind_direction_10m"
+        f"&start={start_time.strftime('%Y-%m-%dT%H:00')}"
+        f"&end={end_time.strftime('%Y-%m-%dT%H:00')}"
+        f"&timezone=UTC"
+    )
 
-    df = pd.DataFrame(data)
-    df.to_csv('data/mock_wind_data.csv', index=False)
+    print(f"Requesting wind data from Open-Meteo:\n{url}\n")
+    response = requests.get(url)
+
+    if response.status_code != 200:
+        raise Exception(f"Failed to fetch data: {response.status_code} {response.text}")
+
+    data = response.json()
+
+    df = pd.DataFrame({
+        "time": data["hourly"]["time"],
+        "wind_speed_mps": data["hourly"]["wind_speed_10m"],
+        "wind_direction_deg": data["hourly"]["wind_direction_10m"],
+    })
+
+    # ✅ Add static lat/lon columns for use in simulation
+    df["lat"] = lat
+    df["lon"] = lon
+
     return df
