@@ -28,7 +28,7 @@ def simulate():
         # Generate plots
         plot_dispersion(path, output_path=os.path.join(OUTPUT_DIR, "spread_plot.png"))
         plot_wind_pattern(wind_data, output_path=os.path.join(OUTPUT_DIR, "wind_pattern.png"))
-        plot_wind_vectors(wind_data, output_path=os.path.join(OUTPUT_DIR, "wind_vector_path.png"))
+        plot_wind_vectors(wind_data, output_path=os.path.join(OUTPUT_DIR, "wind_vector.png"))
 
 
         return jsonify({
