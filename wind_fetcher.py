@@ -27,13 +27,16 @@ def fetch_wind_data(lat, lon):
 
     data = response.json()
 
+    # ✅ Confirm all fields exist
+    if not all(k in data["hourly"] for k in ("time", "wind_speed_10m", "wind_direction_10m")):
+        raise Exception("Missing one or more required keys in API response")
+
     df = pd.DataFrame({
-        "timestamp": data["hourly"]["time"],
+        "time": pd.to_datetime(data["hourly"]["time"]),
         "wind_speed_mps": data["hourly"]["wind_speed_10m"],
         "wind_direction_deg": data["hourly"]["wind_direction_10m"],
     })
 
-    # ✅ Add static lat/lon columns for use in simulation
     df["lat"] = lat
     df["lon"] = lon
 
