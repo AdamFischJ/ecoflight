@@ -2,11 +2,11 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from wind_fetcher import fetch_wind_data
 from simulator import simulate_dispersion
-from visualizer import plot_dispersion, plot_wind_pattern, plot_wind_vector_path
+from visualizer import plot_dispersion, plot_wind_pattern, plot_wind_vectors
 import os
 
 app = Flask(__name__)
-CORS(app)  # Enable CORS for cross-origin access
+CORS(app)  # ✅ Enable CORS for all routes
 
 OUTPUT_DIR = "outputs"
 
@@ -18,19 +18,16 @@ def simulate():
         material = request.json.get("material", "smoke")
 
         print(f"Simulating: lat={lat}, lon={lon}, material={material}")
-
-        # Fetch wind data
         wind_data = fetch_wind_data(lat, lon)
 
-        # Simulate dispersion based on material type
+        # Run simulation
         path, total_distance, max_wind = simulate_dispersion(wind_data, material_type=material)
 
-        # Generate plots
+        # Create plots
         plot_dispersion(path, output_path=os.path.join(OUTPUT_DIR, "spread_plot.png"))
         plot_wind_pattern(wind_data, output_path=os.path.join(OUTPUT_DIR, "wind_pattern.png"))
-        plot_wind_vector_path(wind_data, output_path=os.path.join(OUTPUT_DIR, "wind_vector_path.png"))
+        plot_wind_vectors(wind_data, output_path=os.path.join(OUTPUT_DIR, "wind_vector_path.png"))
 
-        # Return results
         return jsonify({
             "spread_plot": "/outputs/spread_plot.png",
             "wind_pattern": "/outputs/wind_pattern.png",
@@ -54,5 +51,7 @@ def get_output_file(filename):
 def home():
     return "EcoFlight API is running."
 
+# ✅ Bind to 0.0.0.0 and use dynamic port for Render
 if __name__ == "__main__":
-    app.run(debug=True)
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port, debug=True)
