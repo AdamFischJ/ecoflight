@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>EcoFlight Wind Simulation</title>
-  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style.css" />
   <script defer src="main.js?v=2"></script>
 </head>
 <body>
@@ -12,16 +12,22 @@
     <h1>EcoFlight Wind Simulation</h1>
 
     <div class="input-row">
-      <label for="lat">Latitude:</label>
-      <input type="number" id="lat" step="any" placeholder="e.g. 34.2257" />
-      <label for="lon">Longitude:</label>
-      <input type="number" id="lon" step="any" placeholder="e.g. -77.9447" />
-      <label for="material">Material:</label>
-      <select id="material">
-        <option value="smoke">Smoke</option>
-        <option value="pollen">Pollen</option>
-        <option value="plastic">Plastic</option>
-      </select>
+      <div class="input-group">
+        <label for="lat">Latitude:</label>
+        <input type="number" id="lat" step="any" placeholder="e.g. 34.2257" />
+      </div>
+      <div class="input-group">
+        <label for="lon">Longitude:</label>
+        <input type="number" id="lon" step="any" placeholder="e.g. -77.9447" />
+      </div>
+      <div class="input-group">
+        <label for="material">Material:</label>
+        <select id="material">
+          <option value="smoke">Smoke</option>
+          <option value="pollen">Pollen</option>
+          <option value="plastic">Plastic</option>
+        </select>
+      </div>
       <button onclick="runSimulation()">Run Simulation</button>
     </div>
 
