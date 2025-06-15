@@ -32,6 +32,7 @@ async function runSimulation() {
     document.getElementById("windPatternImg").src = `${API_BASE_URL}/static/outputs/wind_pattern.png${t}`;
     document.getElementById("windVectorImg").src = `${API_BASE_URL}/static/outputs/wind_vector.png${t}`;
 
+    document.getElementById("results").style.display = "block";
 
 
     document.getElementById("stats").innerHTML = `
