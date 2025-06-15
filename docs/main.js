@@ -13,7 +13,7 @@ async function runSimulation() {
   document.getElementById("results").style.display = "none";
 
   try {
-    const res = await fetch("https://ecoflight.onrender.com/simulate", {
+    const res = await fetch("https://web-production-2a99a.up.railway.app/simulate", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lat, lon, material })
