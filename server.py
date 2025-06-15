@@ -45,9 +45,9 @@ def simulate():
         print("Error:", str(e))
         return jsonify({"error": str(e)}), 500
 
-@app.route("/outputs/<filename>")
+@app.route("/static/outputs/<filename>")
 def get_output_file(filename):
-    return send_from_directory(OUTPUT_DIR, filename)
+    return send_from_directory("outputs", filename)
 
 @app.route("/", methods=["GET"])
 def home():
