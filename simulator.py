@@ -4,7 +4,7 @@ import pandas as pd
 def simulate_dispersion(wind_data, material_type="smoke"):
     """
     Simulates wind-driven material spread using basic physics adjustments based on material type.
-    Returns the path as a list of (lat, lon), the total distance traveled, and max wind speed.
+    Returns the path as a list of (lat, lon), total distance traveled, max wind speed, and total hours.
     """
 
     # Material-based physics adjustments
@@ -48,4 +48,6 @@ def simulate_dispersion(wind_data, material_type="smoke"):
 
         total_distance += math.sqrt(delta_lat**2 + delta_lon**2) * KM_PER_DEG_LAT
 
-    return positions, round(total_distance, 2), round(max_wind, 2)
+    total_hours = len(wind_data)
+
+    return positions, round(total_distance, 2), round(max_wind, 2), total_hours

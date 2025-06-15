@@ -22,14 +22,13 @@ def simulate():
         # Fetch wind data
         wind_data = fetch_wind_data(lat, lon)
 
-        # Simulate particle spread
-        path, total_distance, max_wind = simulate_dispersion(wind_data, material_type=material)
+        # Simulate particle spread (now returns total_hours as 4th value)
+        path, total_distance, max_wind, total_hours = simulate_dispersion(wind_data, material_type=material)
 
         # Generate plots
         plot_dispersion(path, output_path=os.path.join(OUTPUT_DIR, "spread_plot.png"))
         plot_wind_pattern(wind_data, output_path=os.path.join(OUTPUT_DIR, "wind_pattern.png"))
         plot_wind_vectors(wind_data, output_path=os.path.join(OUTPUT_DIR, "wind_vector.png"))
-
 
         return jsonify({
             "spread_plot": "/outputs/spread_plot.png",
@@ -38,7 +37,7 @@ def simulate():
             "stats": {
                 "distance_km": total_distance,
                 "max_wind_speed": max_wind,
-                "hours": len(wind_data)
+                "total_hours": total_hours
             }
         })
 
@@ -55,5 +54,5 @@ def home():
     return "EcoFlight API is running."
 
 if __name__ == "__main__":
-    port = int(os.environ.get("PORT", 5000))  # ✅ important for Render.com deployment
+    port = int(os.environ.get("PORT", 5000))  # ✅ important for Render/Railway deployment
     app.run(host="0.0.0.0", port=port)
