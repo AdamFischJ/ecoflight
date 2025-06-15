@@ -1,4 +1,4 @@
-const API_BASE_URL = "https://web-production-2a99a.up.railway.app";  // Your actual Railway backend URL
+const API_BASE_URL = "https://web-production-2a99a.up.railway.app";
 
 async function runSimulation() {
   const lat = document.getElementById("lat").value;
@@ -27,10 +27,10 @@ async function runSimulation() {
       return;
     }
 
-    const t = `?t=${Date.now()}`; // Prevent browser caching
-    document.getElementById("spreadImg").src = `${API_BASE_URL}${data.spread_plot}${t}`;
-    document.getElementById("windPatternImg").src = `${API_BASE_URL}${data.wind_pattern}${t}`;
-    document.getElementById("windVectorImg").src = `${API_BASE_URL}${data.wind_vector_path}${t}`;
+    const t = `?t=${Date.now()}`;
+    document.getElementById("spreadImg").src = `${API_BASE_URL}${data.spread_plot.png}${t}`;
+    document.getElementById("windPatternImg").src = `${API_BASE_URL}${data.wind_pattern.png}${t}`;
+    document.getElementById("windVectorImg").src = `${API_BASE_URL}${data.wind_vector.png}${t}`;
 
     document.getElementById("stats").innerHTML = `
       <strong>Material:</strong> ${material}<br>
