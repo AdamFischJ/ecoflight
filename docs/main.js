@@ -28,9 +28,10 @@ async function runSimulation() {
     }
 
    const t = `?t=${Date.now()}`;
-    document.getElementById("spreadImg").src = `${API_BASE_URL}/outputs/spread_plot.png${t}`;
-    document.getElementById("windPatternImg").src = `${API_BASE_URL}/outputs/wind_pattern.png${t}`;
-    document.getElementById("windVectorImg").src = `${API_BASE_URL}/outputs/wind_vector.png${t}`;
+    document.getElementById("spreadImg").src = `${API_BASE_URL}/static/outputs/spread_plot.png${t}`;
+    document.getElementById("windPatternImg").src = `${API_BASE_URL}/static/outputs/wind_pattern.png${t}`;
+    document.getElementById("windVectorImg").src = `${API_BASE_URL}/static/outputs/wind_vector.png${t}`;
+
 
 
     document.getElementById("stats").innerHTML = `
