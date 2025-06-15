@@ -17,23 +17,33 @@ def plot_dispersion(path, output_path="outputs/spread_plot.png"):
     plt.savefig(output_path)
     plt.close()
 
+from datetime import timezone
+import matplotlib.dates as mdates
+
 def plot_wind_pattern(df, output_path="outputs/wind_pattern.png"):
+    # Convert time to proper UTC-aware datetime
+    times = pd.to_datetime(df["time"], utc=True)
+
     fig, ax1 = plt.subplots(figsize=(8, 5))
     ax1.set_title("Wind Direction and Speed (Past 24 Hours)")
-    ax1.plot(df["time"], df["wind_direction_deg"], 'bo-', label='Direction (°)')
+    ax1.plot(times, df["wind_direction_deg"], 'bo-', label='Direction (°)')
     ax1.set_xlabel("Time (UTC)")
     ax1.set_ylabel("Wind Direction (°)", color='blue')
     ax1.tick_params(axis='y', labelcolor='blue')
-    ax1.tick_params(axis='x', rotation=90)
+
+    # Clean and readable time labels
+    ax1.xaxis.set_major_formatter(mdates.DateFormatter('%m-%d %H:%M', tz=timezone.utc))
+    fig.autofmt_xdate()
 
     ax2 = ax1.twinx()
-    ax2.plot(df["time"], df["wind_speed_mps"], 'r--', label='Speed (m/s)')
+    ax2.plot(times, df["wind_speed_mps"], 'r--', label='Speed (m/s)')
     ax2.set_ylabel("Wind Speed (m/s)", color='red')
     ax2.tick_params(axis='y', labelcolor='red')
 
     fig.tight_layout()
     plt.savefig(output_path)
     plt.close()
+
 
 def plot_wind_vectors(df, output_path="outputs/wind_vector_path.png"):
     KM_PER_DEG = 111
