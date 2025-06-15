@@ -1,3 +1,5 @@
+const API_BASE_URL = "https://web-production-2a99a.up.railway.app";  // Your actual Railway backend URL
+
 async function runSimulation() {
   const lat = document.getElementById("lat").value;
   const lon = document.getElementById("lon").value;
@@ -10,10 +12,9 @@ async function runSimulation() {
 
   document.getElementById("loading").style.display = "block";
   document.getElementById("stats").style.display = "none";
-  document.getElementById("results").style.display = "none";
 
   try {
-    const res = await fetch("https://web-production-2a99a.up.railway.app/simulate", {
+    const res = await fetch(`${API_BASE_URL}/simulate`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ lat, lon, material })
@@ -26,19 +27,18 @@ async function runSimulation() {
       return;
     }
 
-    const t = `?t=${Date.now()}`;
-    document.getElementById("spreadImg").src = "https://ecoflight.onrender.com" + data.spread_plot + t;
-    document.getElementById("windPatternImg").src = "https://ecoflight.onrender.com" + data.wind_pattern + t;
-    document.getElementById("windVectorImg").src = "https://ecoflight.onrender.com" + data.wind_vector_path + t;
+    const t = `?t=${Date.now()}`; // Prevent browser caching
+    document.getElementById("spreadImg").src = `${API_BASE_URL}${data.spread_plot}${t}`;
+    document.getElementById("windPatternImg").src = `${API_BASE_URL}${data.wind_pattern}${t}`;
+    document.getElementById("windVectorImg").src = `${API_BASE_URL}${data.wind_vector_path}${t}`;
 
     document.getElementById("stats").innerHTML = `
       <strong>Material:</strong> ${material}<br>
       <strong>Distance Traveled:</strong> ${data.stats.distance_km.toFixed(2)} km<br>
       <strong>Max Wind Speed:</strong> ${data.stats.max_wind_speed.toFixed(2)} m/s<br>
-      <strong>Total Simulation Time:</strong> ${data.stats.hours ?? 'N/A'} hours
+      <strong>Total Simulation Time:</strong> ${data.stats.total_hours} hours
     `;
     document.getElementById("stats").style.display = "block";
-    document.getElementById("results").style.display = "block";
 
   } catch (err) {
     alert("Simulation failed.");
