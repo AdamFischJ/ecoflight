@@ -35,7 +35,7 @@ async function runSimulation() {
       <strong>Material:</strong> ${material}<br>
       <strong>Distance Traveled:</strong> ${data.stats.distance_km.toFixed(2)} km<br>
       <strong>Max Wind Speed:</strong> ${data.stats.max_wind_speed.toFixed(2)} m/s<br>
-      <strong>Total Simulation Time:</strong> ${data.stats.total_hours} hours
+      <strong>Total Simulation Time:</strong> ${data.stats.hours ?? 'N/A'} hours
     `;
     document.getElementById("stats").style.display = "block";
     document.getElementById("results").style.display = "block";
