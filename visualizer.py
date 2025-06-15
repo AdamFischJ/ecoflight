@@ -26,10 +26,11 @@ def plot_wind_pattern(df, output_path="outputs/wind_pattern.png"):
 
     fig, ax1 = plt.subplots(figsize=(8, 5))
     # Generate dynamic title based on actual time range
-    start_time = times.min().strftime('%m-%d')
-    end_time = times.max().strftime('%m-%d')
+    start = times.min().strftime('%m-%d %H:%M')
+    end_time = times.max().floor('H')
+    end = times.max().strftime('%m-%d %H:%M')
 
-    ax1.set_title(f"Wind Direction and Speed ({start_time} to {end_time} UTC)")
+    ax1.set_title(f"Wind Direction and Speed ({start} to {end} UTC)")
     ax1.plot(times, df["wind_direction_deg"], 'bo-', label='Direction (°)')
     ax1.set_xlabel("Time (UTC)")
     ax1.set_ylabel("Wind Direction (°)", color='blue')
